@@ -29,6 +29,24 @@ recordRoutes.route("/records").get(function (req, res) {
         });
 });
 
+// This section will help you get a list of all the records.
+recordRoutes.route("/records/:id").get(function (req, res) {
+    let db_connect = dbo.getDb();
+    let myQuery = {_id: new ObjectID(req.params.id)}
+    db_connect
+        .collection("records")
+        .findOne(myQuery)
+        .then(result => {
+            if(result) {
+              console.log(`Successfully found document: ${result}.`);
+            } else {
+              console.log("No document matches the provided query.");
+            }
+            res.json(result);
+        });
+});
+
+
 recordRoutes.route("/records").post(function (req, res) {
     let db_connect = dbo.getDb();
     let myobj = {
